@@ -24,11 +24,35 @@ class CustomerController extends Controller
             });
         }
 
+        // Filter by date range
+        if ($request->has('date_range')) {
+            $today = now();
+            switch ($request->date_range) {
+                case '7_days':
+                    $query->where('created_at', '>=', $today->copy()->subDays(7));
+                    break;
+                case '30_days':
+                    $query->where('created_at', '>=', $today->copy()->subDays(30));
+                    break;
+                case '3_months':
+                    $query->where('created_at', '>=', $today->copy()->subMonths(3));
+                    break;
+                case 'custom_range':
+                    // You can handle custom range logic here
+                    break;
+            }
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status !== '') {
+            $query->where('status', $request->status);
+        }
+
         // Pagination
         $pageSize = $request->input('page_size', 10);
         $customers = $query->paginate($pageSize);
 
-        return response()->json($customers);
+        return response()->json($customers)->header('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
 
     // Create a New Customer

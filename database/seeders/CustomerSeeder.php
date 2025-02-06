@@ -14,8 +14,9 @@ class CustomerSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
+        $statuses = ['Active', 'Inactive', 'Dormant', 'Overdue'];
 
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 100) as $index) {
             Customer::create([
                 'firstname' => $faker->firstName,
                 'lastname' => $faker->lastName,
@@ -33,6 +34,7 @@ class CustomerSeeder extends Seeder
                 'id_card' => $faker->optional()->sha1,
                 'voters_card' => $faker->optional()->sha1,
                 'drivers_licence' => $faker->optional()->sha1,
+                'status' => $statuses[array_rand($statuses)],
             ]);
         }
     }

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('id_card')->nullable();
             $table->string('voters_card')->nullable();
             $table->string('drivers_licence')->nullable();
+            $table->string('status')->default("Active"); // Add status column
             $table->timestamps();
         });
     }
