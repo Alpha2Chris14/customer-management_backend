@@ -50,7 +50,7 @@ class CustomerController extends Controller
 
         // Pagination
         $pageSize = $request->input('page_size', 10);
-        $customers = $query->paginate($pageSize);
+        $customers = $query->orderBy('created_at', 'desc')->paginate($pageSize);
 
         return response()->json($customers)->header('Cache-Control', 'no-cache, no-store, must-revalidate');
     }
@@ -97,7 +97,7 @@ class CustomerController extends Controller
             'state' => 'sometimes|required|string',
             'bankcode' => 'sometimes|required|string',
             'accountnumber' => ['sometimes', 'required', Rule::unique('customers')->ignore($customer->id)],
-            'company_id' => 'sometimes|required|string',
+            'company_id' => 'sometimes|required',
             'email' => ['sometimes', 'required', 'email', Rule::unique('customers')->ignore($customer->id)],
             'city' => 'sometimes|required|string',
             'country' => 'sometimes|required|string',
